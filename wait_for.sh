@@ -11,6 +11,7 @@ KUBECTL_ARGS=""
 WAIT_TIME="${WAIT_TIME:-2}" # seconds
 DEBUG="${DEBUG:-0}"
 TREAT_ERRORS_AS_READY="${TREAT_ERRORS_AS_READY:-0}"
+MAX_RETRIES="${MAX_RETRIES:-0}"
 
 usage() {
 cat <<EOF
@@ -161,12 +162,23 @@ get_service_state() {
 # in a 'kubectl describe' job output.
 get_job_state() {
     get_job_state_name="$1"
-    get_job_state_output=$(kubectl describe jobs "$get_job_state_name" $KUBECTL_ARGS 2>&1)
+    i=0
 
-    if [ $? -ne 0 ]; then
-        echo "$get_job_state_output" >&2
-        kill -s TERM $TOP_PID
-    elif [ $DEBUG -ge 2 ]; then
+    while [ "$i" -le "$MAX_RETRIES" ]
+    do
+        get_job_state_output=$(kubectl describe jobs "$get_job_state_name" $KUBECTL_ARGS 2>&1)
+        if [ $? -ne 0 ]; then
+            echo "$get_job_state_output" >&2
+            i=$((i + 1))
+            if [ "$i" -gt "$MAX_RETRIES" ]; then
+                kill -s TERM $TOP_PID
+            fi
+        else
+            break
+        fi
+    done
+
+    if [ $DEBUG -ge 2 ]; then
         echo "$get_job_state_output" >&2
     fi
     if [ "$get_job_state_output" == "" ] || echo "$get_job_state_output" | grep -q "No resources found"; then
