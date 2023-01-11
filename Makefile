@@ -9,7 +9,7 @@ BUILDER_NAME = k8s-wait-for-builder
 NON_ROOT_DOCKERFILE = DockerfileNonRoot
 DOCKER_TAGS = $(USER_NAME)/$(REPO_NAME):$(TAG_PREFIX)latest $(USER_NAME)/$(REPO_NAME):$(TAG_PREFIX)$(TAG) ghcr.io/$(USER_NAME)/$(REPO_NAME):$(TAG_PREFIX)latest ghcr.io/$(USER_NAME)/$(REPO_NAME):$(TAG_PREFIX)$(TAG)
 
-all: push
+all: image
 
 images: image-root image-non-root
 
@@ -42,3 +42,6 @@ clean:
 	rm -f $(NON_ROOT_DOCKERFILE)
 	if docker buildx inspect $(BUILDER_NAME) 2> /dev/null ; then docker buildx rm $(BUILDER_NAME) ; fi
 	$(foreach TAG,$(DOCKER_TAGS),docker rmi -f $(TAG); )
+
+test: image
+        docker tag $(PREFIX)/$(REPO_NAME) $(PREFIX)/$(REPO_NAME):test  # Add a tag for the current image to be tested

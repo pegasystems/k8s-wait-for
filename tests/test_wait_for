@@ -1,0 +1,32 @@
+test_wait_for_job_success() {
+  JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}';
+
+  echo "Deploying wait_for_job_success.yaml"
+  kubectl apply -f wait_for_job_success.yaml
+
+  local TIMEOUT=15
+  local cmd=""
+  local attempt_count=1
+
+  until kubectl -n default get pods -lapp=travis-example -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"
+  do
+    if (( attempt_count == TIMEOUT ))
+    then
+      fail "Timeout while waiting for a successful deployment"
+      kubectl get pods -n default
+      return 1
+    else
+      echo "Waiting..."
+      ((attempt_count++))
+      sleep 1
+    fi
+  done
+  assert "test $attempt_count -gt 1" "The wait_for job should have waited at least one iteration"
+}
+
+teardown() {
+  kubectl get all
+  echo "Cleaning up run resources..."
+  kubectl delete all -l cleanup=teardown
+  kubectl get all
+}
