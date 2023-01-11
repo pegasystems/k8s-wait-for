@@ -1,14 +1,12 @@
 FROM alpine:3.16.2
 
-MAINTAINER Michal Orzechowski <orzechowski.michal@gmail.com>
-
 ARG VCS_REF
 ARG BUILD_DATE
 ARG TARGETARCH
 
 # Metadata
 LABEL org.label-schema.vcs-ref=$VCS_REF \
-      org.label-schema.vcs-url="https://github.com/groundnuty/k8s-wait-for" \
+      org.label-schema.vcs-url="https://github.com/pegasystems/k8s-wait-for" \
       org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.docker.dockerfile="/Dockerfile"
 
