@@ -13,7 +13,7 @@ spec:
     command: ['sh', '-c', 'echo The app is running! && sleep 60']
   initContainers:
   - name: init-container-under-test
-    image: dcasavant/k8s-wait-for:test
+    image: pegasystems/k8s-wait-for:test
     args: ["job",  "pi"]
 ---
 apiVersion: batch/v1
