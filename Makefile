@@ -44,4 +44,4 @@ clean:
 	$(foreach TAG,$(DOCKER_TAGS),docker rmi -f $(TAG); )
 
 test: images
-	docker tag $(PREFIX)/$(REPO_NAME) $(PREFIX)/$(REPO_NAME):test  # Add a tag for the current image to be tested
+	docker tag $(DOCKER_TAGS)
