@@ -89,7 +89,7 @@ jobs:
     name: Container Tests
     runs-on: ubuntu-latest
     if: always()
-    needs: docker-login
+    needs: [build, scan]
     env:
       CHANGE_MINIKUBE_NONE_USER: true
       MINIKUBE_WANTUPDATENOTIFICATION: false
