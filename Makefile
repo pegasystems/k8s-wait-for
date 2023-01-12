@@ -42,3 +42,6 @@ clean:
 	rm -f $(NON_ROOT_DOCKERFILE)
 	if docker buildx inspect $(BUILDER_NAME) 2> /dev/null ; then docker buildx rm $(BUILDER_NAME) ; fi
 	$(foreach TAG,$(DOCKER_TAGS),docker rmi -f $(TAG); )
+
+test: images
+	docker tag $(PREFIX)/$(REPO_NAME) $(PREFIX)/$(REPO_NAME):test  # Add a tag for the current image to be tested
