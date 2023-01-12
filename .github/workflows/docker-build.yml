@@ -55,6 +55,8 @@ jobs:
           cat ${{ steps.scan.outputs.sarif }} | jq '.runs[0].tool.driver.rules[].shortDescription.text' | grep -i "medium" || true
           cat ${{ steps.scan.outputs.sarif }} | jq '.runs[0].tool.driver.rules[].shortDescription.text' | grep -i "low" || true
           cat ${{ steps.scan.outputs.sarif }} | jq '.runs[0].tool.driver.rules[].shortDescription.text' | grep -iv "critical\|high\|medium\|low" || true
+          echo "Details:"
+          cat ${{ steps.scan.outputs.sarif }}
 
       - name: Publish Scan Results as Artifact
         if: always()
