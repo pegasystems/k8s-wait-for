@@ -68,24 +68,18 @@ jobs:
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
 
-  docker-login:
-    name: Log in to DockerHub
-    if: always()
+  deploy:
+    name: Push to DockerHub
+    if: ${{ github.ref == 'refs/heads/master' && github.repository == 'pegasystems/k8s-wait-for' }}
     runs-on: ubuntu-latest
+    needs: [scan, test]
+    #needs: [scan]
     steps:
       - name: Login to Docker Hub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-  deploy:
-    name: Push to DockerHub
-    if: ${{ github.ref == 'refs/heads/master' && github.repository == 'pegasystems/k8s-wait-for' }}
-    runs-on: ubuntu-latest
-    needs: [docker-login, scan, test]
-    #needs: [scan]
-    steps:
       - name: Check out working repository
         uses: actions/checkout@v2
       - name: Push image to dockerhub
@@ -103,6 +97,11 @@ jobs:
       MINIKUBE_HOME: $HOME
       KUBECONFIG: $HOME/.kube/config
     steps:
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Check out working repository
         uses: actions/checkout@v2
 
