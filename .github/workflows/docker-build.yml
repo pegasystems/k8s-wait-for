@@ -103,13 +103,24 @@ jobs:
       #    password: ${{ secrets.DOCKERHUB_TOKEN }}
       #- name: Check out working repository
       #  uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          # Need tags for Makefile logic to work
+          fetch-depth: 0
+
+      - name: Build the Docker image
+        env:
+          # amd build so that local 'docker images' can access images
+          TARGET: linux/amd64
+          BUILD_FLAGS: --load --no-cache
+        run: make test
 
       - name: Run Container Tests
         run: |
           curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64
           chmod +x container-structure-test-linux-amd64
           sudo mv container-structure-test-linux-amd64 /usr/local/bin/container-structure-test
-          make test
+        #  make test
       
       - name: Install prerequisites
         run: |
