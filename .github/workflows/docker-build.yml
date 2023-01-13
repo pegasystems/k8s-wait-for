@@ -132,11 +132,11 @@ jobs:
           touch $HOME/.kube/config
           sudo apt-get install -y conntrack
           sudo minikube start --vm-driver=none --kubernetes-version=v1.23.15
+          kubectl cluster-info
 
       - name: Ensure kubernetes is ready
         run: |
           ifconfig
-          minikube ip
           ls -al ${HOME}/.kube
           cat ${HOME}/.kube/config
           kubectl cluster-info
