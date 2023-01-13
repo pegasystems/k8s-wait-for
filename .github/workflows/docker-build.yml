@@ -117,8 +117,6 @@ jobs:
 
       - name: Run Container Tests
         run: |
-          whoami
-          echo "HOME: ${HOME}"
           curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64
           chmod +x container-structure-test-linux-amd64
           sudo mv container-structure-test-linux-amd64 /usr/local/bin/container-structure-test
@@ -131,14 +129,7 @@ jobs:
           curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v1.23.15/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
           curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.28.0/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
           mkdir -p $HOME/.kube $HOME/.minikube
-          whoami
-          echo "HOME: ${HOME}"
-          pwd
-          ls -al $HOME
-          ls -al $HOME/.kube
-          echo "MINIKUBE_HOME: $MINIKUBE_HOME"
-          echo "KUBECONFIG: $KUBECONFIG"
-          touch $KUBECONFIG
+          touch $HOME/.kube/config
           sudo minikube start --vm-driver=none --kubernetes-version=v1.23.15
 
       - name: Ensure kubernetes is ready
