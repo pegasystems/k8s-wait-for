@@ -131,7 +131,7 @@ jobs:
           mkdir -p $HOME/.kube $HOME/.minikube
           touch $HOME/.kube/config
           sudo apt-get install -y conntrack
-          sudo minikube start --vm-driver=none --kubernetes-version=v1.23.15
+          minikube start --vm-driver=none --kubernetes-version=v1.23.15
           kubectl cluster-info
 
       - name: Ensure kubernetes is ready
