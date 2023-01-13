@@ -136,7 +136,6 @@ jobs:
       - name: Ensure kubernetes is ready
         run: |
           ifconfig
-          minikube profile list
           minikube ip
           ls -al ${HOME}/.kube
           cat ${HOME}/.kube/config
