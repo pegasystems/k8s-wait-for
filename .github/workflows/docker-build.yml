@@ -133,7 +133,6 @@ jobs:
           sudo apt-get install -y conntrack
           minikube start --vm-driver=none --kubernetes-version=v1.23.15
           echo "minikube startup complete."
-          docker images
           docker save -o k8s-wait-for-test pegasystems/k8s-wait-for:test
           minikube image load k8s-wait-for-test
 
