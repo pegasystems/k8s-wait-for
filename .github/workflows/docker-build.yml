@@ -136,6 +136,8 @@ jobs:
           pwd
           ls -al $HOME
           ls -al $HOME/.kube
+          echo "MINIKUBE_HOME: $MINIKUBE_HOME"
+          echo "KUBECONFIG: $KUBECONFIG"
           touch $KUBECONFIG
           sudo minikube start --vm-driver=none --kubernetes-version=v1.23.15
 
