@@ -132,13 +132,13 @@ jobs:
           touch $HOME/.kube/config
           sudo apt-get install -y conntrack
           minikube start --vm-driver=none --kubernetes-version=v1.23.15
-          kubectl cluster-info
+          echo "minikube startup complete."
+          docker images
+          docker save -o k8s-wait-for-test pegasystems/k8s-wait-for:test
+          minikube image load k8s-wait-for-test
 
       - name: Ensure kubernetes is ready
         run: |
-          ifconfig
-          ls -al ${HOME}/.kube
-          cat ${HOME}/.kube/config
           kubectl cluster-info
           JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl -n kube-system get pods -lk8s-app=kube-dns -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"; do sleep 1;echo "waiting for kube-dns to be available"; kubectl get pods --all-namespaces; done
 
