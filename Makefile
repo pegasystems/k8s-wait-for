@@ -7,7 +7,7 @@ BUILD_DATE = $(shell date -u +'%Y-%m-%dT%H:%M:%SZ')
 BUILD_FLAGS := $(if $(BUILD_FLAGS),$(BUILD_FLAGS),--load --no-cache)
 BUILDER_NAME = k8s-wait-for-builder
 NON_ROOT_DOCKERFILE = DockerfileNonRoot
-DOCKER_TAGS = pegasystems/$(REPO_NAME):$(TAG_PREFIX)latest pegasystems/$(REPO_NAME):$(TAG_PREFIX)$(TAG) pegasystems/$(REPO_NAME):$(TAG_PREFIX)test
+DOCKER_TAGS = pegasystems/$(REPO_NAME):$(TAG_PREFIX)latest pegasystems/$(REPO_NAME):$(TAG_PREFIX)$(TAG)
 
 all: push
 
@@ -42,3 +42,6 @@ clean:
 	rm -f $(NON_ROOT_DOCKERFILE)
 	if docker buildx inspect $(BUILDER_NAME) 2> /dev/null ; then docker buildx rm $(BUILDER_NAME) ; fi
 	$(foreach TAG,$(DOCKER_TAGS),docker rmi -f $(TAG); )
+
+test: images
+	docker tag pegasystems/$(REPO_NAME):latest pegasystems/$(REPO_NAME):test
