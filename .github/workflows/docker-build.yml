@@ -110,10 +110,8 @@ jobs:
 
       - name: Setup environment variables
         run: |
-          export XXXMINIKUBE_HOME=$HOME
-          export XXXKUBECONFIG=$HOME/.kube/config
-          echo "::set-env name=XXXMINIKUBE_HOME::$XXXMINIKUBE_HOME"
-          echo "::set-env name=XXXKUBECONFIG::$XXXKUBECONFIG"
+          echo "minikube_home=$HOME" >> $GITHUB_ENV
+          echo "kubeconfig=$HOME/.kube/config" >> $GITHUB_ENV
 
       - name: Build the Docker image
         env:
@@ -124,8 +122,8 @@ jobs:
 
       - name: Check Vars
         run: |
-          echo "XXXMINIKUBE_HOME=${XXXMINIKUBE_HOME}"
-          echo "XXXKUBECONFIG=${XXXKUBECONFIG}"
+          echo "{{ env.minikube_home }}"
+          echo "{{ env.kubconfig }}"
 
       - name: Run Container Tests
         run: |
