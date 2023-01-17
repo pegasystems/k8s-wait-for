@@ -1,0 +1,11 @@
+if [ "$KUBECTL_TRACKER" = "" ]; then
+  echo "Kubectl Tracker file not configured correctly"
+  exit 1
+elif [ -e "$KUBECTL_TRACKER" ]; then
+  echo "1 Active (1 Ready) / 0 Succeeded / 0 Failed"
+  exit 0
+else
+  echo "Simulated network error for test"
+  touch "$KUBECTL_TRACKER"
+  exit 1
+fi
