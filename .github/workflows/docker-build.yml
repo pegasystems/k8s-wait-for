@@ -93,8 +93,7 @@ jobs:
       CHANGE_MINIKUBE_NONE_USER: true
       MINIKUBE_WANTUPDATENOTIFICATION: false
       MINIKUBE_WANTREPORTERRORPROMPT: false
-      MINIKUBE_HOME: /home/runner
-      KUBECONFIG: /home/runner/.kube/config
+
     steps:
       #- name: Login to Docker Hub
       #  uses: docker/login-action@v1
@@ -110,8 +109,8 @@ jobs:
 
       - name: Setup environment variables
         run: |
-          echo "minikube_home=$HOME" >> $GITHUB_ENV
-          echo "kubeconfig=$HOME/.kube/config" >> $GITHUB_ENV
+          echo "MINIKUBE_HOME=$HOME" >> $GITHUB_ENV
+          echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
 
       - name: Build the Docker image
         env:
@@ -120,17 +119,11 @@ jobs:
           BUILD_FLAGS: --load --no-cache
         run: make test
 
-      - name: Check Vars
-        run: |
-          echo "${{ env.minikube_home }}"
-          echo "${{ env.kubconfig }}"
-
       - name: Run Container Tests
         run: |
           curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64
           chmod +x container-structure-test-linux-amd64
           sudo mv container-structure-test-linux-amd64 /usr/local/bin/container-structure-test
-        #  make test
       
       - name: Install prerequisites
         run: |
@@ -139,7 +132,7 @@ jobs:
           curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v1.23.15/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
           curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.28.0/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
           mkdir -p $HOME/.kube $HOME/.minikube
-          touch $HOME/.kube/config
+          touch $KUBECONFIG
           sudo apt-get install -y conntrack
           minikube start --vm-driver=none --kubernetes-version=v1.23.15
           echo "minikube startup complete."
