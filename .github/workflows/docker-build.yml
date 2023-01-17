@@ -122,8 +122,8 @@ jobs:
 
       - name: Check Vars
         run: |
-          echo "{{ env.minikube_home }}"
-          echo "{{ env.kubconfig }}"
+          echo "${{ env.minikube_home }}"
+          echo "${{ env.kubconfig }}"
 
       - name: Run Container Tests
         run: |
