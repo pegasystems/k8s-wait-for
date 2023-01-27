@@ -36,7 +36,7 @@ jobs:
           BUILD_FLAGS: --load --no-cache
         run: make images
 
-      - name: Scan image-root
+      - name: Scan image
         id: scan
         uses: anchore/scan-action@v3
         with:
