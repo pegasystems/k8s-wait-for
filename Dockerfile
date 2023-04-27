@@ -24,7 +24,8 @@ ENV KUBE_LATEST_VERSION="v1.25.4"
 COPY --from=builder /usr/local/bin/kubectl /usr/local/bin/kubectl
 
 
-RUN ls -al /usr/local/bin/kube*
+RUN ls -al /usr/local/bin/kube* && \
+    cat /usr/local/bin/kubectl
 
 
 # Replace for non-root version
