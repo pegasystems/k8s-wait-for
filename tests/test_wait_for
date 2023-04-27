@@ -14,6 +14,7 @@ test_wait_for_job_success() {
     then
       fail "Timeout while waiting for a successful deployment"
       kubectl get pods -n default
+
       return 1
     else
       echo "Waiting..."
