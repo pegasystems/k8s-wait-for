@@ -1,5 +1,7 @@
 FROM alpine:3.16.2 AS builder
 
+ARG TARGETARCH
+
 ENV KUBE_LATEST_VERSION="v1.25.4"
 
 RUN apk add --update --no-cache ca-certificates=20220614-r0 curl=8.0.1-r0 jq=1.6-r1 \
@@ -11,7 +13,6 @@ FROM alpine:3.16.2
 
 ARG VCS_REF
 ARG BUILD_DATE
-ARG TARGETARCH
 
 # Metadata
 LABEL org.label-schema.vcs-ref=$VCS_REF \
@@ -22,11 +23,6 @@ LABEL org.label-schema.vcs-ref=$VCS_REF \
 ENV KUBE_LATEST_VERSION="v1.25.4"
 
 COPY --from=builder /usr/local/bin/kubectl /usr/local/bin/kubectl
-
-
-RUN ls -al /usr/local/bin/kube* && \
-    cat /usr/local/bin/kubectl
-
 
 # Replace for non-root version
 ENV USER=k8swatcher
