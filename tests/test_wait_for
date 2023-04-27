@@ -14,7 +14,10 @@ test_wait_for_job_success() {
     then
       fail "Timeout while waiting for a successful deployment"
       kubectl get pods -n default
-      kubectl describe -n default pod myapp-pod
+      kubectl describe pod myapp-pod -n default
+
+      minikube image list
+
       return 1
     else
       echo "Waiting..."
