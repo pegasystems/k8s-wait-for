@@ -23,6 +23,10 @@ ENV KUBE_LATEST_VERSION="v1.25.4"
 
 COPY --from=builder /usr/local/bin/kubectl /usr/local/bin/kubectl
 
+
+RUN ls -al /usr/local/bin/kube*
+
+
 # Replace for non-root version
 ENV USER=k8swatcher
 ENV UID=1100
