@@ -10,14 +10,11 @@ test_wait_for_job_success() {
 
   until kubectl -n default get pods -lapp=travis-example -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"
   do
-    kubectl describe pod myapp-pod -n default
+    kubectl logs myapp-pod init-container-under-test -n default
     if (( attempt_count == TIMEOUT ))
     then
       fail "Timeout while waiting for a successful deployment"
       kubectl get pods -n default
-      kubectl describe pod myapp-pod -n default
-
-      minikube image list
 
       return 1
     else

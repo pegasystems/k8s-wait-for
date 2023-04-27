@@ -9,7 +9,7 @@ metadata:
 spec:
   containers:
   - name: myapp-container
-    image: alpine:latest
+    image: busybox
     command: ['sh', '-c', 'echo The app is running! && sleep 60']
   initContainers:
   - name: init-container-under-test
