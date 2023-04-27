@@ -28,7 +28,8 @@ ENV USER=k8swatcher
 ENV UID=1100
 ENV GID=1100
 
-RUN addgroup -g $GID $USER && \
+RUN apk -U --no-cache upgrade && \
+    addgroup -g $GID $USER && \
     adduser \
     --disabled-password \
     --gecos "" \
