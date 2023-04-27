@@ -140,6 +140,8 @@ jobs:
           echo "minikube startup complete."
           docker save -o k8s-wait-for-test pegasystems/k8s-wait-for:test
           minikube image load k8s-wait-for-test
+          echo "Sleeping for 10s..."
+          sleep 10
 
       - name: Ensure kubernetes is ready
         run: |
