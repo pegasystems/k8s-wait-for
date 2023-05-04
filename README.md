@@ -7,7 +7,7 @@ A simple script that allows waiting for a k8s service, job or pods to enter the 
 You can start simple. Run it on your cluster in a namespace you already have something deployed:
 
 ```bash
-kubectl run k8s-wait-for --rm -it --image ghcr.io/groundnuty/k8s-wait-for:v1.6 --restart Never --command /bin/sh
+kubectl run k8s-wait-for --rm -it --image pegasystems/k8s-wait-for:latest --restart Never --command /bin/sh
 ```
 
 Read `--help` and play with it!
@@ -81,19 +81,19 @@ spec:
     spec:
       initContainers:
         - name: wait-for-onezone
-          image: ghcr.io/groundnuty/k8s-wait-for:v1.6
+          image: pegasystems/k8s-wait-for:latest
           imagePullPolicy: Always
           args:
             - "job"
             - "develop-onezone-ready-check"
         - name: wait-for-volume-ceph
-          image: ghcr.io/groundnuty/k8s-wait-for:v1.6
+          image: pegasystems/k8s-wait-for:latest
           imagePullPolicy: Always
           args:
             - "pod"
             - "-lapp=develop-volume-ceph-krakow"
         - name: wait-for-volume-gluster
-          image: ghcr.io/groundnuty/k8s-wait-for:v1.6
+          image: pegasystems/k8s-wait-for:latest
           imagePullPolicy: Always
           args:
             - "pod"
