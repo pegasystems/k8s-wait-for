@@ -26,7 +26,7 @@ ENV UID=1100
 ENV GID=1100
 
 RUN apk -U --no-cache upgrade && \
-    apk add --update --no-cache ca-certificates=20220614-r0 jq=1.6-r1 && \
+    apk add --update --no-cache jq=1.6-r1 && \
     addgroup -g $GID $USER && \
     adduser \
     --disabled-password \
