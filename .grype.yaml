@@ -1,15 +1,12 @@
 ignore:
   # For grype configuration, see https://github.com/anchore/grype#specifying-matches-to-ignore
-
+  
   # CVE-2015-5237 high vulnerability for google.golang.org/protobuf package
   # https://nvd.nist.gov/vuln/detail/CVE-2015-5237
   #- vulnerability: CVE-2015-5237
   #  package:
   #    name: google.golang.org/protobuf
   #    location: /usr/local/bin/kubectl
-
+  
   - vulnerability: GHSA-hqxw-f8mx-cpmw
-    package: 
-      name: github.com/docker/distribution
-      location: /usr/local/bin/kubectl
     fix-state: "not-fixed"
