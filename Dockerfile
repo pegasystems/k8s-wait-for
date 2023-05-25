@@ -2,7 +2,7 @@ FROM alpine:3.16.2 AS builder
 
 ARG TARGETARCH
 
-RUN apk add --update --no-cache ca-certificates curl=8.0.1-r0 jq=1.6-r1 \
+RUN apk add --update --no-cache ca-certificates curl jq=1.6-r1 \
     && KUBECTL_LATEST_STABLE_VERSION=$(curl -L https://dl.k8s.io/release/stable.txt) \
     && curl -L https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_LATEST_STABLE_VERSION}/bin/linux/$TARGETARCH/kubectl -o /usr/local/bin/kubectl \
     && chmod +x /usr/local/bin/kubectl
