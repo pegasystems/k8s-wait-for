@@ -1,6 +1,8 @@
 ignore:
   # For grype configuration, see https://github.com/anchore/grype#specifying-matches-to-ignore
-    
+
+  # This is part of the kubectl executable.  It will be included in this
+  # docker image when the authors of kubectl adopt the fix for this issue.
   - vulnerability: GHSA-hqxw-f8mx-cpmw
     fix-state: "not-fixed"
 
