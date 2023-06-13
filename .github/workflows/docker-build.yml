@@ -45,7 +45,7 @@ jobs:
           image: "pegasystems/k8s-wait-for:latest"
           fail-build: true
           severity-cutoff: "high"
-          acs-report-enable: true
+          # acs-report-enable: true
 
       - name: Log Scan Results
         if: always()
