@@ -45,11 +45,14 @@ jobs:
           image: "pegasystems/k8s-wait-for:latest"
           fail-build: true
           severity-cutoff: "high"
-          acs-report-enable: true
+          output-format: sarif
 
       - name: Log Scan Results
         if: always()
         run: |
+          echo "Raw Results:"
+          echo ${{ steps.scan.outputs.sarif }}
+          echo ""
           echo "Failures:"
           cat ${{ steps.scan.outputs.sarif }} | jq '.runs[0].tool.driver.rules[].shortDescription.text' | grep -i "critical" || true
           cat ${{ steps.scan.outputs.sarif }} | jq '.runs[0].tool.driver.rules[].shortDescription.text' | grep -i "high" || true
