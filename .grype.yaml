@@ -6,5 +6,5 @@ ignore:
   - vulnerability: GHSA-hqxw-f8mx-cpmw
     fix-state: "not-fixed"
 
-  - package:
-      location: /usr/local/bin/kubectl
+  #- package:
+  #    location: /usr/local/bin/kubectl
