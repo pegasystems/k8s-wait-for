@@ -9,9 +9,7 @@ ignore:
   #- package:
   #    location: /usr/local/bin/kubectl
   
-  - vulnerability: GHSA-hqxw-f8mx-cpmw-github.com/docker/distribution
+  - vulnerability: GHSA-hqxw-f8mx-cpmw
     fix-state: not-fixed
     package:
-      name: github.com/docker/distribution
-      version: v2.8.1+incompatible
       location: /usr/local/bin/kubectl
