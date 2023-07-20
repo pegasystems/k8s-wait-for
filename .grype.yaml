@@ -8,3 +8,10 @@ ignore:
 
   #- package:
   #    location: /usr/local/bin/kubectl
+  
+  - vulnerability: GHSA-f4w6-3rh6-6q4q-k8s.io/kubernetes
+    fix-state: not-fixed
+    package:
+      name: github.com/docker/distribution
+      version: v2.8.1+incompatible
+      location: /usr/local/bin/kubectl
