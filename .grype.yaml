@@ -1,10 +1,14 @@
 ignore:
   # For grype configuration, see https://github.com/anchore/grype#specifying-matches-to-ignore
 
-  # This is part of the kubectl executable.  It will be included in this
-  # docker image when the authors of kubectl adopt the fix for this issue.
-  - vulnerability: GHSA-hqxw-f8mx-cpmw
-    fix-state: "not-fixed"
 
-  - package:
+  # The kubectl leverages a single function the github.com/docker/distribution v2.8.1 go
+  # package.  It uses this function to validate that it was passed a syntactically
+  # correct image name.  There is no way to exploit this vulnerability from kubectl.
+  # For more information, see: 
+  #   https://github.com/distribution/distribution/security/advisories/GHSA-hqxw-f8mx-cpmw
+  - vulnerability: GHSA-hqxw-f8mx-cpmw
+    fix-state: "fixed"
+    package:
       location: /usr/local/bin/kubectl
+
