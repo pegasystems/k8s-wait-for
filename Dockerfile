@@ -25,6 +25,9 @@ ENV USER=k8swatcher
 ENV UID=1100
 ENV GID=1100
 
+# Workaround suggested by https://nvd.nist.gov/vuln/detail/CVE-2023-4807
+ENV OPENSSL_ia32cap=:~0x200000
+
 RUN apk -U --no-cache upgrade && \
     apk add --update --no-cache jq=1.6-r1 && \
     addgroup -g $GID $USER && \
