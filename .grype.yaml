@@ -12,3 +12,9 @@ ignore:
     package:
       location: /usr/local/bin/kubectl
 
+  # https://nvd.nist.gov/vuln/detail/CVE-2023-4807
+  # There is not currently a fix available -- have implemented the suggested
+  # workaround.
+  - vulnerability: CVE-2023-4807
+    fix-state: "not-fixed"
+
