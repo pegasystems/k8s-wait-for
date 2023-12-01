@@ -8,7 +8,6 @@ RUN apk add --update --no-cache ca-certificates curl jq \
     && chmod +x /usr/local/bin/kubectl
 
 FROM alpine:3.18
-
 ARG VCS_REF
 ARG BUILD_DATE
 
