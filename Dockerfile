@@ -1,13 +1,13 @@
-FROM alpine:3.16.2 AS builder
+FROM alpine:3.18 AS builder
 
 ARG TARGETARCH
 
-RUN apk add --update --no-cache ca-certificates curl jq=1.6-r1 \
+RUN apk add --update --no-cache ca-certificates curl jq \
     && KUBECTL_LATEST_STABLE_VERSION=$(curl -L https://dl.k8s.io/release/stable.txt) \
     && curl -L https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_LATEST_STABLE_VERSION}/bin/linux/$TARGETARCH/kubectl -o /usr/local/bin/kubectl \
     && chmod +x /usr/local/bin/kubectl
 
-FROM alpine:3.16.2
+FROM alpine:3.18
 
 ARG VCS_REF
 ARG BUILD_DATE
@@ -29,7 +29,7 @@ ENV GID=1100
 ENV OPENSSL_ia32cap=:~0x200000
 
 RUN apk -U --no-cache upgrade && \
-    apk add --update --no-cache jq=1.6-r1 && \
+    apk add --update --no-cache jq && \
     addgroup -g $GID $USER && \
     adduser \
     --disabled-password \
