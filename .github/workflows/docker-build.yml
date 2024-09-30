@@ -157,4 +157,3 @@ jobs:
         run: |
           kubectl apply -f tests/kubernetes-role-access.yaml
           ./bash_unit tests/test_*
-          kubectl logs  myapp-pod -c init-container-under-test

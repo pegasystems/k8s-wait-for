@@ -19,6 +19,8 @@ test_wait_for_job_success() {
     else
       echo "Waiting..."
       ((attempt_count++))
+      kubectl describe pod myapp-pod
+      kubectl logs myapp-pod -c init-container-under-test
       sleep 1
     fi
   done
