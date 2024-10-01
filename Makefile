@@ -6,7 +6,7 @@ VCS_REF = $(shell git rev-parse --short HEAD)
 BUILD_DATE = $(shell date -u +'%Y-%m-%dT%H:%M:%SZ')
 BUILD_FLAGS := $(if $(BUILD_FLAGS),$(BUILD_FLAGS),--load --no-cache)
 BUILDER_NAME = k8s-wait-for-builder
-DOCKER_TAGS = pegasystems/$(REPO_NAME):latest pegasystems/$(REPO_NAME):$(TAG)
+DOCKER_TAGS = ganga3/k8s-wait-for:latest ganga3/k8s-wait-for:$(TAG)
 
 all: push
 
@@ -31,6 +31,3 @@ push: image
 clean:
 	if docker buildx inspect $(BUILDER_NAME) 2> /dev/null ; then docker buildx rm $(BUILDER_NAME) ; fi
 	$(foreach TAG,$(DOCKER_TAGS),docker rmi -f $(TAG); )
-
-test: images
-	docker tag pegasystems/$(REPO_NAME):latest pegasystems/$(REPO_NAME):test
