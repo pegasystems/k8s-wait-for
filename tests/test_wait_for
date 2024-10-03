@@ -11,6 +11,7 @@ test_wait_for_job_success() {
   until kubectl -n default get pods -lapp=travis-example -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"
   do
     kubectl -n default describe pod myapp-pod
+    kubectl -n default logs myapp-pod
     if (( attempt_count == TIMEOUT ))
     then
       fail "Timeout while waiting for a successful deployment"
