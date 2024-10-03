@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+set -x
+
 # This script is aimed to be POSIX-compliant and style consistent with help of these tools:
 # - https://github.com/koalaman/shellcheck
 # - https://github.com/openstack-dev/bashate
