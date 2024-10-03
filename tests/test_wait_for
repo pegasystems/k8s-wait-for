@@ -12,6 +12,8 @@ test_wait_for_job_success() {
   do
     kubectl -n default get pod myapp-pod
     kubectl -n default logs myapp-pod init-container-under-test
+    kubectl version
+
     if (( attempt_count == TIMEOUT ))
     then
       fail "Timeout while waiting for a successful deployment"
