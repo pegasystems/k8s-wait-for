@@ -15,7 +15,7 @@ DEBUG="${DEBUG:-0}"
 TREAT_ERRORS_AS_READY="${TREAT_ERRORS_AS_READY:-0}"
 MAX_RETRIES="${MAX_RETRIES:-0}"
 
-kubectl version
+ls -al $(which kubectl)
 
 usage() {
 cat <<EOF
