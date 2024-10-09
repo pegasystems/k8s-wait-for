@@ -1,7 +1,5 @@
 #!/usr/bin/env sh
 
-set -x
-
 # This script is aimed to be POSIX-compliant and style consistent with help of these tools:
 # - https://github.com/koalaman/shellcheck
 # - https://github.com/openstack-dev/bashate
@@ -14,8 +12,6 @@ WAIT_TIME="${WAIT_TIME:-2}" # seconds
 DEBUG="${DEBUG:-0}"
 TREAT_ERRORS_AS_READY="${TREAT_ERRORS_AS_READY:-0}"
 MAX_RETRIES="${MAX_RETRIES:-0}"
-
-ls -al $(which kubectl)
 
 usage() {
 cat <<EOF
