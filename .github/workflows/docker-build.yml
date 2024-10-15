@@ -60,7 +60,7 @@ jobs:
 
       - name: Publish Scan Results as Artifact
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: docker-scan-results
           path: ${{ steps.scan.outputs.sarif }}
@@ -71,7 +71,7 @@ jobs:
           cat ${{ steps.scan.outputs.sarif }}
 
       - name: Upload Anchore Scan SARIF Report
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
 

@@ -1,13 +1,15 @@
-FROM alpine:3.18 AS builder
+FROM alpine:3.20 AS builder
 
 ARG TARGETARCH
 
 RUN apk add --update --no-cache ca-certificates curl jq \
     && KUBECTL_LATEST_STABLE_VERSION=$(curl -L https://dl.k8s.io/release/stable.txt) \
-    && curl -L https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_LATEST_STABLE_VERSION}/bin/linux/$TARGETARCH/kubectl -o /usr/local/bin/kubectl \
+    && echo "kubectl version: ${KUBECTL_LATEST_STABLE_VERSION}" \
+    && curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/$TARGETARCH/kubectl" -o /usr/local/bin/kubectl \
+    && ls -al /usr/local/bin/kubectl \
     && chmod +x /usr/local/bin/kubectl
 
-FROM alpine:3.18
+FROM alpine:3.20
 ARG VCS_REF
 ARG BUILD_DATE
 

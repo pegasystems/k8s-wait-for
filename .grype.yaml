@@ -1,20 +1,16 @@
 ignore:
   # For grype configuration, see https://github.com/anchore/grype#specifying-matches-to-ignore
 
-
-  # The kubectl leverages a single function the github.com/docker/distribution v2.8.1 go
-  # package.  It uses this function to validate that it was passed a syntactically
-  # correct image name.  There is no way to exploit this vulnerability from kubectl.
-  # For more information, see: 
-  #   https://github.com/distribution/distribution/security/advisories/GHSA-hqxw-f8mx-cpmw
-  - vulnerability: GHSA-hqxw-f8mx-cpmw
-    fix-state: "fixed"
+  # https://nvd.nist.gov/vuln/detail/CVE-2024-34156
+  # Expecting upstream fix in next patch build of kubectl executable
+  - vulnerability: CVE-2024-34156
     package:
       location: /usr/local/bin/kubectl
 
-  # https://nvd.nist.gov/vuln/detail/CVE-2023-4807
-  # There is not currently a fix available -- have implemented the suggested
-  # workaround.
-  - vulnerability: CVE-2023-4807
+  # https://nvd.nist.gov/vuln/detail/CVE-2024-34158
+  # Expecting upstream fix in next patch build of kubectl executable
+  - vulnerability: CVE-2024-34158
+    package:
+      location: /usr/local/bin/kubectl
 
 
