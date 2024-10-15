@@ -1,4 +1,4 @@
-FROM alpine:3.18 AS builder
+FROM alpine:3.20 AS builder
 
 ARG TARGETARCH
 
@@ -9,7 +9,7 @@ RUN apk add --update --no-cache ca-certificates curl jq \
     && ls -al /usr/local/bin/kubectl \
     && chmod +x /usr/local/bin/kubectl
 
-FROM alpine:3.18
+FROM alpine:3.20
 ARG VCS_REF
 ARG BUILD_DATE
 
