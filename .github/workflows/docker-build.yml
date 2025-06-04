@@ -141,8 +141,18 @@ jobs:
           
           curl -Lo cri-dockerd.tgz https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.17/cri-dockerd-0.3.17.amd64.tgz
           tar -xzvf cri-dockerd.tgz
-          cp cri-dockerd/cri-dockerd /usr/local/bin
+          install -o root -g root -m 0755 cri-dockerd /usr/local/bin/cri-dockerd
+          curl -Lo cri-docker.service https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.service
+          curl -Lo cri-docker.socket https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.socket
+          install cri-docker.service /etc/systemd/system
+          install cri-docker.socket /etc/systemd/system
+          sed -i -e 's,/usr/bin/cri-dockerd,/usr/local/bin/cri-dockerd,' /etc/systemd/system/cri-docker.service
+          systemctl daemon-reload
+          systemctl enable --now cri-docker.socket
+          systemctl status cri-docker
           rm cri-dockerd.tgz
+          rm cri-docker.service
+          rm cri-docker.socket
           
           curl -Lo crictl.tar.gz https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.33.0/crictl-v1.33.0-linux-amd64.tar.gz
           tar zxvf crictl.tar.gz -C /usr/local/bin
