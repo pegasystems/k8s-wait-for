@@ -156,6 +156,8 @@ jobs:
           echo "7"
           sudo systemctl enable --now cri-docker.socket
           echo "8"
+          sudo systemctl restart docker
+          echo "8.5"
           sudo systemctl status cri-docker
           echo "9"
           rm cri-dockerd.tgz
