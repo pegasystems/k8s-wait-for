@@ -138,6 +138,10 @@ jobs:
         run: |
           curl -o bash_unit "https://raw.githubusercontent.com/pgrange/bash_unit/master/bash_unit"
           chmod +x bash_unit
+          VERSION="v1.33.0"
+          curl -Lo https://github.com/kubernetes-sigs/cri-tools/releases/download/$VERSION/crictl-$VERSION-linux-amd64.tar.gz
+          tar zxvf crictl-$VERSION-linux-amd64.tar.gz -C /usr/local/bin
+          rm -f crictl-$VERSION-linux-amd64.tar.gz
           curl -Lo kubectl https://dl.k8s.io/release/v1.33.1/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
           curl -Lo minikube https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64 && install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
           mkdir -p $HOME/.kube $HOME/.minikube
