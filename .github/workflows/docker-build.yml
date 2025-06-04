@@ -142,11 +142,16 @@ jobs:
           curl -Lo cri-dockerd.tgz https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.17/cri-dockerd-0.3.17.amd64.tgz
           tar -xzvf cri-dockerd.tgz
           cp cri-dockerd/cri-dockerd /usr/local/bin
-          
           rm cri-dockerd.tgz
+          
           curl -Lo crictl.tar.gz https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.33.0/crictl-v1.33.0-linux-amd64.tar.gz
           tar zxvf crictl.tar.gz -C /usr/local/bin
           rm -f crictl.tar.gz
+          
+          curl -Lo cni-plugins.tgz https://github.com/containernetworking/plugins/releases/download/v1.7.1/cni-plugins-linux-amd64-v1.7.1.tgz
+          sudo mkdir -p /opt/cni/bin
+          sudo tar -xf cni-plugins.tgz -C /opt/cni/bin
+          rm cni-plugins.tgz
           
           curl -Lo kubectl https://dl.k8s.io/release/v1.33.1/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
           curl -Lo minikube https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64 && install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
