@@ -141,7 +141,7 @@ jobs:
           
           curl -Lo cri-dockerd.tgz https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.17/cri-dockerd-0.3.17.amd64.tgz
           tar -xzvf cri-dockerd.tgz
-          install -o root -g root -m 0755 cri-dockerd /usr/local/bin/cri-dockerd
+          install -o root -g root -m 0755 cri-dockerd/cri-dockerd /usr/local/bin/cri-dockerd
           curl -Lo cri-docker.service https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.service
           curl -Lo cri-docker.socket https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.socket
           install cri-docker.service /etc/systemd/system
