@@ -139,21 +139,6 @@ jobs:
           curl -o bash_unit "https://raw.githubusercontent.com/pgrange/bash_unit/master/bash_unit"
           chmod +x bash_unit
           
-          sudo echo "[Unit]" > /etc/systemd/system/cri-docker.service
-          sudo echo "Description=CRI-Dockerd service" >> /etc/systemd/system/cri-docker.service
-          sudo echo "Wants=docker.service" >> /etc/systemd/system/cri-docker.service
-          sudo echo "After=docker.service" >> /etc/systemd/system/cri-docker.service
-          sudo echo "" >> /etc/systemd/system/cri-docker.service
-          sudo echo "[Service]" >> /etc/systemd/system/cri-docker.service
-          sudo echo "Type=simple" >> /etc/systemd/system/cri-docker.service
-          sudo echo "ExecStart=/usr/local/bin/cri-dockerd" >> /etc/systemd/system/cri-docker.service
-          sudo echo "User=root" >> /etc/systemd/system/cri-docker.service
-          sudo echo "Environment=DOCKER_HOST=localhost" >> /etc/systemd/system/cri-docker.service
-          sudo echo "Restart=on-failure" >> /etc/systemd/system/cri-docker.service
-          sudo echo "" >> /etc/systemd/system/cri-docker.service
-          sudo echo "[Install]" >> /etc/systemd/system/cri-docker.service
-          sudo echo "WantedBy=multi-user.target" >> /etc/systemd/system/cri-docker.service
-          
           curl -Lo cri-dockerd.tgz https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.17/cri-dockerd-0.3.17.amd64.tgz
           tar -xzvf cri-dockerd.tgz
           cp cri-dockerd/cri-dockerd /usr/local/bin
