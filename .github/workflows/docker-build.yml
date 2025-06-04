@@ -157,6 +157,7 @@ jobs:
           sudo systemctl enable --now cri-docker.socket
           echo "8"
           sudo systemctl status cri-docker
+          echo "9"
           rm cri-dockerd.tgz
           rm cri-docker.service
           rm cri-docker.socket
