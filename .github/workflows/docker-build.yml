@@ -137,54 +137,38 @@ jobs:
       - name: Install prerequisites
         run: |
           set -x
+          
+          docker save -o k8s-wait-for-test pegasystems/k8s-wait-for:test
+          
           curl -o bash_unit "https://raw.githubusercontent.com/pgrange/bash_unit/master/bash_unit"
           chmod +x bash_unit
           
-          curl -Lo runc.amd64 https://github.com/opencontainers/runc/releases/download/v1.3.0/runc.amd64
-          sudo install runc.amd64 /usr/local/bin/runc
-          rm runc.amd64
+          for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
           
-          curl -Lo cri-dockerd.tgz https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.17/cri-dockerd-0.3.17.amd64.tgz
-          tar -xzvf cri-dockerd.tgz
-          sudo install -o root -g root -m 0755 cri-dockerd/cri-dockerd /usr/local/bin/cri-dockerd
-
-          curl -Lo cri-docker.service https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.service
-          curl -Lo cri-docker.socket https://raw.githubusercontent.com/Mirantis/cri-dockerd/master/packaging/systemd/cri-docker.socket
-          sudo install cri-docker.service /etc/systemd/system
-          sudo install cri-docker.socket /etc/systemd/system
-          sudo sed -i -e 's,/usr/bin/cri-dockerd,/usr/local/bin/cri-dockerd,' /etc/systemd/system/cri-docker.service
+          sudo apt-get update
+          sudo apt-get install ca-certificates curl
+          sudo install -m 0755 -d /etc/apt/keyrings
+          sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+          sudo chmod a+r /etc/apt/keyrings/docker.asc
           
-          which cri-dockerd
-          cri-dockerd --help
+          echo \
+            "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+            $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+            sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+          sudo apt-get update
           
-          sudo systemctl enable cri-docker.service
-          sudo systemctl enable --now cri-docker.socket
-          sudo systemctl daemon-reload
-          echo "8"
-          sudo systemctl status cri-docker || true
-          journalctl -xeu cri-docker.service
-          echo "9"
-          rm cri-dockerd.tgz
-          rm cri-docker.service
-          rm cri-docker.socket
+          sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+          sudo docker run hello-world
           
-          curl -Lo crictl.tar.gz https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.33.0/crictl-v1.33.0-linux-amd64.tar.gz
-          tar zxvf crictl.tar.gz -C /usr/local/bin
-          rm -f crictl.tar.gz
-          
-          curl -Lo cni-plugins.tgz https://github.com/containernetworking/plugins/releases/download/v1.7.1/cni-plugins-linux-amd64-v1.7.1.tgz
-          sudo mkdir -p /opt/cni/bin
-          sudo tar -xf cni-plugins.tgz -C /opt/cni/bin
-          rm cni-plugins.tgz
           
           curl -Lo kubectl https://dl.k8s.io/release/v1.33.1/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
           curl -Lo minikube https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64 && install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
           mkdir -p $HOME/.kube $HOME/.minikube
           touch $KUBECONFIG
           sudo apt-get install -y conntrack
-          minikube start --vm-driver=none --kubernetes-version=v1.31.0
+          minikube start --vm-driver=docker --kubernetes-version=v1.31.0
           echo "minikube startup complete."
-          docker save -o k8s-wait-for-test pegasystems/k8s-wait-for:test
+          
           minikube image load k8s-wait-for-test
           echo "Sleeping for 10s..."
           sleep 10
