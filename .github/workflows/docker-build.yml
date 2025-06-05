@@ -140,6 +140,10 @@ jobs:
           curl -o bash_unit "https://raw.githubusercontent.com/pgrange/bash_unit/master/bash_unit"
           chmod +x bash_unit
           
+          curl -Lo runc.amd64 https://github.com/opencontainers/runc/releases/download/v1.3.0/runc.amd64
+          sudo install runc.amd64 /usr/local/bin/runc
+          rm runc.amd64
+          
           curl -Lo cri-dockerd.tgz https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.17/cri-dockerd-0.3.17.amd64.tgz
           tar -xzvf cri-dockerd.tgz
           sudo install -o root -g root -m 0755 cri-dockerd/cri-dockerd /usr/local/bin/cri-dockerd
