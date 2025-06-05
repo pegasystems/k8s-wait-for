@@ -16,7 +16,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v3
         with:
@@ -26,7 +26,7 @@ jobs:
         run: make images
   scan:
     needs: [ "build" ]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v3
         with:
@@ -69,7 +69,7 @@ jobs:
 
       - name: View sarif file
         if: always()
-        run: | 
+        run: |
           cat ${{ steps.scan.outputs.sarif }}
 
       - name: Upload Anchore Scan SARIF Report
@@ -80,7 +80,7 @@ jobs:
   deploy:
     name: Push to DockerHub
     if: ${{ github.ref == 'refs/heads/master' && github.repository == 'pegasystems/k8s-wait-for' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [scan, test]
     steps:
       - name: Login to Docker Hub
@@ -95,7 +95,7 @@ jobs:
 
   test:
     name: Container Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     if: always()
     needs: [build, scan]
     env:
@@ -133,19 +133,42 @@ jobs:
           curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64
           chmod +x container-structure-test-linux-amd64
           sudo mv container-structure-test-linux-amd64 /usr/local/bin/container-structure-test
-      
+
       - name: Install prerequisites
         run: |
+          docker save -o k8s-wait-for-test pegasystems/k8s-wait-for:test
+          
           curl -o bash_unit "https://raw.githubusercontent.com/pgrange/bash_unit/master/bash_unit"
           chmod +x bash_unit
-          curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v1.23.15/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
-          curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.28.0/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+          
+          for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+          
+          sudo apt-get update
+          sudo apt-get install ca-certificates curl
+          sudo install -m 0755 -d /etc/apt/keyrings
+          sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+          sudo chmod a+r /etc/apt/keyrings/docker.asc
+          
+          echo \
+            "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+            $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+            sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+          sudo apt-get update
+          
+          sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+          sudo docker run hello-world
+          
+          curl -Lo kubectl https://dl.k8s.io/release/v1.33.0/bin/linux/amd64/kubectl
+          chmod +x kubectl
+          sudo cp kubectl /usr/local/bin
+          
+          curl -Lo minikube https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64 && install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
           mkdir -p $HOME/.kube $HOME/.minikube
           touch $KUBECONFIG
           sudo apt-get install -y conntrack
-          minikube start --vm-driver=none --kubernetes-version=v1.23.15
+          minikube start --vm-driver=docker --kubernetes-version=v1.31.0
           echo "minikube startup complete."
-          docker save -o k8s-wait-for-test pegasystems/k8s-wait-for:test
+          
           minikube image load k8s-wait-for-test
           echo "Sleeping for 10s..."
           sleep 10
