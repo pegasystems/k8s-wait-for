@@ -163,7 +163,7 @@ jobs:
           KUBECTL_LATEST_STABLE_VERSION=$(curl -L https://dl.k8s.io/release/stable.txt)
           echo "kubectl version: ${KUBECTL_LATEST_STABLE_VERSION}" 
           sudo curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/$TARGETARCH/kubectl" -o /usr/local/bin/kubectl
-          chmod +x /usr/local/bin/kubectl
+          sudo chmod +x /usr/local/bin/kubectl
           
           curl -Lo minikube https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64 && install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
           mkdir -p $HOME/.kube $HOME/.minikube
