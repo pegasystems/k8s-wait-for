@@ -136,8 +136,6 @@ jobs:
       
       - name: Install prerequisites
         run: |
-          set -x
-          
           docker save -o k8s-wait-for-test pegasystems/k8s-wait-for:test
           
           curl -o bash_unit "https://raw.githubusercontent.com/pgrange/bash_unit/master/bash_unit"
@@ -177,9 +175,6 @@ jobs:
 
       - name: Ensure kubernetes is ready
         run: |
-          set -x
-          minikube kubectl -- get pods -A
-          kubectl --help
           kubectl cluster-info
           JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl -n kube-system get pods -lk8s-app=kube-dns -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"; do sleep 1;echo "waiting for kube-dns to be available"; kubectl get pods --all-namespaces; done
 
