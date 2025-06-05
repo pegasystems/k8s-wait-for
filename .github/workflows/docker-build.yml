@@ -152,6 +152,7 @@ jobs:
           sudo systemctl enable cri-docker.service
           sudo systemctl enable --now cri-docker.socket
           sudo systemctl daemon-reload
+          journalctl -u cri-docker.service
           echo "8"
           sudo systemctl status cri-docker
           echo "9"
