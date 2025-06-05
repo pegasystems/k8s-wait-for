@@ -136,6 +136,7 @@ jobs:
       
       - name: Install prerequisites
         run: |
+          set -x
           curl -o bash_unit "https://raw.githubusercontent.com/pgrange/bash_unit/master/bash_unit"
           chmod +x bash_unit
           
@@ -148,15 +149,13 @@ jobs:
           sudo install cri-docker.service /etc/systemd/system
           sudo install cri-docker.socket /etc/systemd/system
           sudo sed -i -e 's,/usr/bin/cri-dockerd,/usr/local/bin/cri-dockerd,' /etc/systemd/system/cri-docker.service
-          sudo systemctl daemon-reload
           sudo systemctl enable cri-docker.service
           sudo systemctl enable --now cri-docker.socket
           sudo systemctl daemon-reload
-          journalctl -u cri-docker.service
           echo "8"
-          sudo service cri-docker.service status
-          sudo service cri-docker.socket status
-          sudo systemctl status cri-docker
+          sudo service cri-docker status || true
+          sudo systemctl status cri-docker || true
+          journalctl -u cri-docker.service
           echo "9"
           rm cri-dockerd.tgz
           rm cri-docker.service
