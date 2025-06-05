@@ -154,6 +154,8 @@ jobs:
           sudo systemctl daemon-reload
           journalctl -u cri-docker.service
           echo "8"
+          sudo service cri-docker.service status
+          sudo service cri-docker.socket status
           sudo systemctl status cri-docker
           echo "9"
           rm cri-dockerd.tgz
