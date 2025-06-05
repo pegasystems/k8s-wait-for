@@ -149,6 +149,9 @@ jobs:
           sudo install cri-docker.service /etc/systemd/system
           sudo install cri-docker.socket /etc/systemd/system
           sudo sed -i -e 's,/usr/bin/cri-dockerd,/usr/local/bin/cri-dockerd,' /etc/systemd/system/cri-docker.service
+          
+          which cri-dockerd
+          
           sudo systemctl enable cri-docker.service
           sudo systemctl enable --now cri-docker.socket
           sudo systemctl daemon-reload
