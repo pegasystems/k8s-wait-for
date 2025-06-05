@@ -161,7 +161,7 @@ jobs:
           sudo docker run hello-world
           
           
-          curl -Lo kubectl https://dl.k8s.io/release/v1.33.1/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
+          curl -Lo kubectl https://dl.k8s.io/release/v1.31.0/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
           curl -Lo minikube https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64 && install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
           mkdir -p $HOME/.kube $HOME/.minikube
           touch $KUBECONFIG
@@ -176,7 +176,7 @@ jobs:
       - name: Ensure kubernetes is ready
         run: |
           set -x
-          minikube kubectl get pods --all-namespaces
+          minikube kubectl -- get pods -A
           kubectl cluster-info
           JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl -n kube-system get pods -lk8s-app=kube-dns -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"; do sleep 1;echo "waiting for kube-dns to be available"; kubectl get pods --all-namespaces; done
 
