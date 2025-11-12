@@ -1,4 +1,4 @@
-TAG = latest
+TAG = $(shell git fetch --tags >/dev/null 2>&1 && git describe --tags `git rev-list --tags --max-count=1`)
 USER_NAME = $(shell git config --get remote.origin.url | sed 's/\.git$$//' | tr ':.' '/' | rev | cut -d '/' -f 2 | rev)
 REPO_NAME = $(shell git config --get remote.origin.url | sed 's/\.git$$//' | tr ':.' '/' | rev | cut -d '/' -f 1 | rev)
 TARGET := $(if $(TARGET),$(TARGET),$(shell ./evaluate_platform.sh))
@@ -6,7 +6,7 @@ VCS_REF = $(shell git rev-parse --short HEAD)
 BUILD_DATE = $(shell date -u +'%Y-%m-%dT%H:%M:%SZ')
 BUILD_FLAGS := $(if $(BUILD_FLAGS),$(BUILD_FLAGS),--load --no-cache)
 BUILDER_NAME = k8s-wait-for-builder
-DOCKER_TAGS = pegasystems/$(REPO_NAME):latest pegasystems/$(REPO_NAME):$(TAG)
+DOCKER_TAGS = chandraprakashreddy/$(REPO_NAME):latest chandraprakashreddy/$(REPO_NAME):$(TAG)
 
 all: push
 
@@ -33,4 +33,4 @@ clean:
 	$(foreach TAG,$(DOCKER_TAGS),docker rmi -f $(TAG); )
 
 test: images
-	docker tag pegasystems/$(REPO_NAME):latest pegasystems/$(REPO_NAME):test
+	docker tag chandraprakashreddy/$(REPO_NAME):latest chandraprakashreddy/$(REPO_NAME):test
