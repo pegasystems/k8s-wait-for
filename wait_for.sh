@@ -13,6 +13,7 @@ DEBUG="${DEBUG:-0}"
 TREAT_ERRORS_AS_READY="${TREAT_ERRORS_AS_READY:-0}"
 MAX_RETRIES="${MAX_RETRIES:-0}"
 
+
 usage() {
 cat <<EOF
 This script waits until a job, pod or service enter ready state.
