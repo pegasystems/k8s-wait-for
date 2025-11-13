@@ -1,4 +1,4 @@
-TAG = latest
+TAG = $(shell git fetch --tags >/dev/null 2>&1 && git describe --tags `git rev-list --tags --max-count=1`)
 USER_NAME = $(shell git config --get remote.origin.url | sed 's/\.git$$//' | tr ':.' '/' | rev | cut -d '/' -f 2 | rev)
 REPO_NAME = $(shell git config --get remote.origin.url | sed 's/\.git$$//' | tr ':.' '/' | rev | cut -d '/' -f 1 | rev)
 TARGET := $(if $(TARGET),$(TARGET),$(shell ./evaluate_platform.sh))
