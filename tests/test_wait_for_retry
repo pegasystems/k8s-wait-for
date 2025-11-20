@@ -1,12 +1,15 @@
 test_wait_for_no_retries() {
+    set +e
     export KUBECTL_TRACKER=$(pwd)/resources/kubectl-tracker
     rm -f $KUBECTL_TRACKER
     PATH=$(pwd)/resources:$PATH
     export MAX_RETRIES=0
     
     ../wait_for.sh job test-job
+    exit_code=$?
+    set -e
 
-    assert "test $? -eq 1" "The wait_for job should not have retried and should have given exit code 1"
+    assert "test $exit_code -eq 1" "The wait_for job should not have retried and should have given exit code 1"
 }
 
 test_wait_for_one_retry() {
