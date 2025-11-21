@@ -44,9 +44,9 @@ jobs:
         id: scan
         uses: anchore/scan-action@v3
         with:
-          image: "chandraprakashreddy/k8s-wait-for:latest"
+          image: "pegasystems/k8s-wait-for:latest"
           fail-build: true
-          severity-cutoff: "critical"
+          severity-cutoff: "high"
           output-format: sarif
 
       - name: Log Scan Results
@@ -79,7 +79,7 @@ jobs:
 
   deploy:
     name: Push to DockerHub
-    if: ${{ github.ref == 'refs/heads/master' && github.repository == 'chandra-prakash-reddy/k8s-wait-for' }}
+    if: ${{ github.ref == 'refs/heads/master' && github.repository == 'pegasystems/k8s-wait-for' }}
     runs-on: ubuntu-24.04
     needs: [scan, test]
     steps:
@@ -136,7 +136,7 @@ jobs:
 
       - name: Install prerequisites
         run: |
-          docker save -o k8s-wait-for-test chandraprakashreddy/k8s-wait-for:test
+          docker save -o k8s-wait-for-test pegasystems/k8s-wait-for:test
           
           curl -o bash_unit "https://raw.githubusercontent.com/pgrange/bash_unit/master/bash_unit"
           chmod +x bash_unit

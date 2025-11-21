@@ -15,7 +15,7 @@ ARG BUILD_DATE
 
 # Metadata
 LABEL org.label-schema.vcs-ref=$VCS_REF \
-      org.label-schema.vcs-url="https://github.com/chandra-prakash-reddy/k8s-wait-for" \
+      org.label-schema.vcs-url="https://github.com/pegasystems/k8s-wait-for" \
       org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.docker.dockerfile="/Dockerfile"
 
