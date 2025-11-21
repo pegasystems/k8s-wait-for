@@ -1,25 +1,26 @@
 test_wait_for_no_retries() {
-    echo "Running test_wait_for_no_retries"
-    # export KUBECTL_TRACKER=$(pwd)/resources/kubectl-tracker
-    # rm -f $KUBECTL_TRACKER
-    # PATH=$(pwd)/resources:$PATH
-    # export MAX_RETRIES=0
+    set +e
+    export KUBECTL_TRACKER=$(pwd)/resources/kubectl-tracker
+    rm -f $KUBECTL_TRACKER
+    PATH=$(pwd)/resources:$PATH
+    export MAX_RETRIES=0
     
-    # ../wait_for.sh job test-job
+    ../wait_for.sh job test-job
+    exit_code=$?
+    set -e
 
-    # assert "test $? -eq 1" "The wait_for job should not have retried and should have given exit code 1"
+    assert "test $exit_code -eq 1" "The wait_for job should not have retried and should have given exit code 1"
 }
 
 test_wait_for_one_retry() {
-    echo "Running test_wait_for_one_retry"
-    # export KUBECTL_TRACKER=$(pwd)/resources/kubectl-tracker
-    # rm -f $KUBECTL_TRACKER
-    # PATH=$(pwd)/resources:$PATH
-    # export MAX_RETRIES=1
+    export KUBECTL_TRACKER=$(pwd)/resources/kubectl-tracker
+    rm -f $KUBECTL_TRACKER
+    PATH=$(pwd)/resources:$PATH
+    export MAX_RETRIES=1
     
-    # ../wait_for.sh job test-job
+    ../wait_for.sh job test-job
 
-    # assert "test $? -eq 0" "The wait_for job should have retried once and given exit code 0"
+    assert "test $? -eq 0" "The wait_for job should have retried once and given exit code 0"
 }
 
 teardown() {
