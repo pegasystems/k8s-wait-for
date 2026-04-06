@@ -3,8 +3,27 @@ ignore:
 
   # https://github.com/advisories/GHSA-w32m-9786-jp63
   # Per upstream Kubernetes developers, kubectl is not impacted by this vuln https://github.com/kubernetes/kubernetes/issues/129412
-  - vulnerability: GHSA-w32m-9786-jp63
-    package:
-      location: /usr/local/bin/kubectl
+  #- vulnerability: GHSA-w32m-9786-jp63
+  #  package:
+  #    location: /usr/local/bin/kubectl
 
+  # https://nvd.nist.gov/vuln/detail/CVE-2026-2673
+  # Severity: High
+  # An OpenSSL TLS 1.3 server may fail to negotiate the expected preferred key exchange group when its key exchange group
+  #  configuration includes the default by using the 'DEFAULT' keyword.
+  # Given that this image only interacts with the kubelet and doesn't interact with user input, this is not a concern for this image.
+  # Original Analysis: 2026-04-06
+  # Last Reviewed: 2026-04-06
+  # NExt Review Due: 2026-04-06
+  - vulnerability: CVE-2026-2673
 
+  # https://nvd.nist.gov/vuln/detail/CVE-2026-27139
+  # Severity: High
+  # On Unix platforms, when listing the contents of a directory using File.ReadDir or File.Readdir the returned FileInfo could reference
+  # a file outside of the Root in which the File was opened.
+  # Given that this CVE is introduced as part of kubectl, the image runs unattended without input from users, and there is no way to influence
+  # the configuration to exploit this CVE, this is not a concern for this image.
+  # Original Analysis: 2026-04-06
+  # Last Reviewed: 2026-04-06
+  # NExt Review Due: 2026-04-06
+  - vulnerability: CVE-2026-25679
