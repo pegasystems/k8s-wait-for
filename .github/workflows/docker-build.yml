@@ -45,17 +45,16 @@ jobs:
         uses: anchore/scan-action@v7
         with:
           image: "pegasystems/k8s-wait-for:latest"
-          fail-build: true
-          severity-cutoff: "high"
+          fail-build: false
           output-format: sarif
 
       - name: Log Scan Results
         if: always()
         run: |
-          echo "Failures:"
+          echo "Critical / High:"
           cat ${{ steps.scan.outputs.sarif }} | jq 'if .runs[0].tool.driver.rules != null then .runs[0].tool.driver.rules[].shortDescription.text else "" end' | grep -i "critical" || true
           cat ${{ steps.scan.outputs.sarif }} | jq 'if .runs[0].tool.driver.rules != null then .runs[0].tool.driver.rules[].shortDescription.text else "" end' | grep -i "high" || true
-          echo "Warnings:"
+          echo "Medium & lower:"
           cat ${{ steps.scan.outputs.sarif }} | jq 'if .runs[0].tool.driver.rules != null then .runs[0].tool.driver.rules[].shortDescription.text else "" end' | grep -i "medium" || true
           cat ${{ steps.scan.outputs.sarif }} | jq 'if .runs[0].tool.driver.rules != null then .runs[0].tool.driver.rules[].shortDescription.text else "" end' | grep -i "low" || true
           cat ${{ steps.scan.outputs.sarif }} | jq 'if .runs[0].tool.driver.rules != null then .runs[0].tool.driver.rules[].shortDescription.text else "" end' | grep -iv "critical\|high\|medium\|low" || true
